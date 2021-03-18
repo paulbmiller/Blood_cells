@@ -52,8 +52,8 @@ for epoch in range(epochs):
         # print statistics
         running_loss += loss.item()
 
-        if i % (len_loader // 5) == (len_loader // 5 - 1):
-            print('Epoch {} {}/{} loss {:.2f}'.format(epoch, i + 1, len_loader, running_loss / 50))
+        if i % 50 == 49:
+            print('Epoch {}/{} batch {}/{} loss {:.2f}'.format(epoch + 1, epochs, i + 1, len_loader, running_loss / 50))
             running_loss = 0.0
 
 print('Finished training')
