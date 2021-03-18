@@ -1,17 +1,7 @@
-"""
-Module to try and use the ResNet50 model to classify new images.
-"""
-
-from keras.utils import plot_model
-from keras.applications.resnet50 import ResNet50
 import torch
 import numpy as np
-from torchvision.models import resnet50
-import ast
-from glob import glob
-from torchvision import datasets, transforms
+from torchvision import transforms
 import matplotlib.pyplot as plt
-from PIL import Image
 import torchvision
 
 
@@ -23,31 +13,6 @@ with open('model_summary_w_top.txt','w') as fh:
 """
 
 model = torch.hub.load('pytorch/vision', 'resnet50', pretrained=True)
-
-
-def get_pretrained_label(param_name):
-    """
-    The purpose is to get my model naming to the model naming from torchvision, for example:
-    'conv4_block1.conv1.weight' will return the string 'layer3.0.conv1.weight'
-
-    :param param_name: name of the parameter in my implementation
-    :return: string: name of the parameter in the torchvision model
-    """
-    if param_name[:2] == 'fc':
-        return param_name
-    elif param_name[13:18] == 'conv0':
-        return 'layer{}.{}.downsample.0.weight'.format(int(param_name[4]) - 1, int(param_name[11]) - 1)
-    elif param_name[13:16] == 'bn0':
-        return 'layer{}.{}.downsample.1.{}'.format(int(param_name[4]) - 1, int(param_name[11]) - 1,
-                                                   param_name.split('.')[-1])
-    elif param_name[:5] != 'conv1':
-        return 'layer{}.{}{}'.format(int(param_name[4]) - 1, int(param_name[11]) - 1, param_name[12:])
-    elif param_name == 'conv1_conv.weight':
-        return 'conv1.weight'
-    elif param_name == 'conv1_bn.weight':
-        return 'bn1.weight'
-    elif param_name == 'conv1_bn.bias':
-        return 'bn1.bias'
 
 
 class ConvBlock(torch.nn.Module):
@@ -113,16 +78,6 @@ class Res50(torch.nn.Module):
         self.avg_pool = torch.nn.AvgPool2d((7, 7))
 
         self.fc = torch.nn.Sequential(torch.nn.Linear(2048, 4), torch.nn.Sigmoid())
-
-    def load_pretrained_weights(self, pretrained_state_dict):
-        state_dict = self.state_dict()
-        print('Loading pretrained weights.')
-
-        with torch.no_grad():
-            for n, p in self.named_parameters():
-                if p.requires_grad:
-                    state_dict[n] = pretrained_state_dict[get_pretrained_label(n)].data
-                    self.load_state_dict(state_dict)
 
     def forward(self, x):
         x = self.conv1_conv(x)
