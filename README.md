@@ -11,4 +11,4 @@ Both the resnet.py and resnet_own.py do the same task, but the resnet_own.py fil
 ## Results
 It achieves over 60% on the test set after 5 training epochs, which could improved since I haven't done much hyperparameter tuning.
 
-![Example](Example.png)
+![Example](Sample.png)

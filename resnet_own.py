@@ -5,16 +5,6 @@ import matplotlib.pyplot as plt
 import torchvision
 
 
-"""
-model = ResNet50(include_top=True, weights='imagenet', input_shape=(224, 224, 3))
-# plot_model(model, 'resnet50.png')
-with open('model_summary_w_top.txt','w') as fh:
-    model.summary(print_fn=lambda x: fh.write(x + '\n'))
-"""
-
-model = torch.hub.load('pytorch/vision', 'resnet50', pretrained=True)
-
-
 class ConvBlock(torch.nn.Module):
     def __init__(self, in_feat, fm_sizes, conv_input=False, stride=1):
         super(ConvBlock, self).__init__()
@@ -112,6 +102,9 @@ class Res50(torch.nn.Module):
 
 
 if __name__ == '__main__':
+    # Model to load the weights from
+    model = torch.hub.load('pytorch/vision', 'resnet50', pretrained=True)
+    # Model to load the weights to
     res = Res50()
 
     sum_params = 0
@@ -157,7 +150,7 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     res.to(device)
 
-    epochs = 1
+    epochs = 5
     res.train()
 
     for epoch in range(epochs):
