@@ -9,6 +9,6 @@ I used the ResNet50 model with my own classification layer. I use the pretrained
 Both the resnet.py and resnet_own.py do the same task, but the resnet_own.py file contains my implementation of the layers of the ResNet50 model which I then load the pretrained weights to. Both models perform identically.
 
 ## Results
-It achieves over 60% on the test set after 5 training epochs, which could improved since I haven't done much hyperparameter tuning.
+It achieves over 70% on the test set after 50 training epochs, which could be improved since I haven't done much hyperparameter tuning.
 
-![Example](Sample.png)
+![Example](Example.png)

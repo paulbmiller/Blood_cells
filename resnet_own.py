@@ -145,12 +145,12 @@ if __name__ == '__main__':
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=True)
 
     loss_fn = torch.nn.CrossEntropyLoss()
-    optim = torch.optim.RMSprop(res.fc.parameters(), lr=3e-4)
+    optim = torch.optim.RMSprop(res.fc.parameters(), lr=1e-4)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     res.to(device)
 
-    epochs = 5
+    epochs = 50
     res.train()
 
     for epoch in range(epochs):
